@@ -1,0 +1,5 @@
+{
+  "title": "Host Test",
+  "message": "JSON 파일을 정상적으로 불러왔습니다.",
+  "items": ["index.html", "data/info.json"]
+}

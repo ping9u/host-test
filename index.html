@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Host Test</title>
+<style>
+  :root { --bg:#f7f7f5; --card:#fff; --text:#1d1d1f; --muted:#6b6b70; --line:#e2e2de; --ok:#1f8a4c; --bad:#c2410c; }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#161618; --card:#202024; --text:#ececef; --muted:#9a9aa2; --line:#33333a; --ok:#4ade80; --bad:#fb923c; }
+  }
+  * { box-sizing: border-box; }
+  body { margin:0; font-family: "Segoe UI", "Malgun Gothic", system-ui, sans-serif; background:var(--bg); color:var(--text); }
+  main { max-width: 640px; margin: 0 auto; padding: 24px 16px 48px; }
+  h1 { font-size: 22px; margin: 0 0 4px; }
+  .sub { color: var(--muted); margin: 0 0 20px; font-size: 14px; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:16px; margin-bottom:16px; }
+  .ok { color:var(--ok); } .bad { color:var(--bad); }
+  ul { margin: 8px 0 0; padding-left: 20px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Host Test</h1>
+  <p class="sub">GitHub Pages 배포 테스트용 샘플입니다. <code>site</code> 폴더를 실제 HTML / JSON 으로 교체하세요.</p>
+
+  <div class="card">
+    <div id="status">data/info.json 불러오는 중...</div>
+    <ul id="items"></ul>
+  </div>
+</main>
+<script>
+  // 상대경로로 JSON 을 읽어야 GitHub Pages(/저장소이름/ 하위 경로)에서도 동작합니다.
+  fetch('data/info.json', { cache: 'no-cache' })
+    .then(res => { if (!res.ok) throw new Error('HTTP ' + res.status); return res.json(); })
+    .then(info => {
+      const status = document.getElementById('status');
+      status.className = 'ok';
+      status.textContent = info.message;
+      info.items.forEach(name => {
+        const li = document.createElement('li');
+        li.textContent = name;
+        document.getElementById('items').appendChild(li);
+      });
+    })
+    .catch(err => {
+      const status = document.getElementById('status');
+      status.className = 'bad';
+      status.textContent = 'JSON 로드 실패: ' + err.message +
+        (location.protocol === 'file:' ? '  (file:// 로 열면 fetch 가 막힙니다. Preview.cmd 로 여세요)' : '');
+    });
+</script>
+</body>
+</html>
